@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatic.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gati.hankki.sample.guide.hankki.mapper.ProductMapper">
+
+    <select id="findAll" resultType="com.gati.hankki.sample.guide.hankki.model.Product">
+        SELECT
+            board_no,
+            member_no,
+            board_name,
+            board_content,
+            board_time,
+            board_category,
+            board_status,
+            created_id,
+            created_at,
+            updated_id,
+            updated_at
+        FROM Boards
+    </select>
+
+    <select id="findById" parameterType="Long" resultType="com.gati.hankki.sample.guide.hankki.model.Product">
+        SELECT
+            board_no,
+            member_no,
+            board_name,
+            board_content,
+            board_time,
+            board_category,
+            board_status,
+            created_id,
+            created_at,
+            updated_id,
+            updated_at
+        FROM Boards
+        WHERE board_no = #{id}
+    </select>
+
+</mapper>
