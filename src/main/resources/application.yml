@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: hankki
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ENC(ivPt/3dXFbrNSdPrY0Q8vX85+oeJt1pW4bNB99nwUZML8h/UFrJi4q03V+pZkrGC)
+    username: ENC(c/kJEdkGBtI73CUD9lnheA==)
+    password: ENC(Fcj5iLBzs42eWgE2JfbgYQ==)
+
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+    call-setters-on-nulls: true
+    jdbc-type-for-null: null
+  mapper-locations: classpath:/mappers/**/*.xml
+  type-aliases-package: com.gati.hankki.domain
+
+springdoc:
+  swagger-ui:
+    path: /swagger
+    tags-sorter: alpha
+    operations-sorter: method
+
+swagger-info:
+  version: 1.0.0
+  title: Hankki API
+  description: Hankki API
+
+jasypt:
+  encryptor:
+    password: makeValueGachiSecondTeamGati
