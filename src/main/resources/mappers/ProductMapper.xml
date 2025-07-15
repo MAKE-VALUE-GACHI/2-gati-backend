@@ -2,9 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatic.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.gati.hankki.sample.guide.hankki.mapper.ProductMapper">
+<mapper namespace="com.gati.hankki.product.mapper.ProductMapper">
 
-    <select id="findAll" resultType="com.gati.hankki.sample.guide.hankki.model.Product">
+    <select id="findAll" resultType="com.gati.hankki.product.model.Product">
         SELECT
             board_no,
             member_no,
@@ -20,7 +20,7 @@
         FROM Boards
     </select>
 
-    <select id="findById" parameterType="Long" resultType="com.gati.hankki.sample.guide.hankki.model.Product">
+    <select id="findById" parameterType="Long" resultType="com.gati.hankki.product.model.Product">
         SELECT
             board_no,
             member_no,

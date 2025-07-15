@@ -1,4 +1,4 @@
-package com.gati.hankki.sample.guide.hankki.model;
+package com.gati.hankki.product.model;
 
 import java.time.LocalDateTime;
 

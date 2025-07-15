@@ -1,6 +1,6 @@
-package com.gati.hankki.sample.guide.hankki.mapper;
+package com.gati.hankki.product.mapper;
 
-import com.gati.hankki.sample.guide.hankki.model.Product;
+import com.gati.hankki.product.model.Product;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

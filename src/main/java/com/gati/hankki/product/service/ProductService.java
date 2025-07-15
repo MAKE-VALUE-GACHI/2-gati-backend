@@ -1,7 +1,7 @@
-package com.gati.hankki.sample.guide.hankki.service;
+package com.gati.hankki.product.service;
 
-import com.gati.hankki.sample.guide.hankki.mapper.ProductMapper;
-import com.gati.hankki.sample.guide.hankki.model.Product;
+import com.gati.hankki.product.mapper.ProductMapper;
+import com.gati.hankki.product.model.Product;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

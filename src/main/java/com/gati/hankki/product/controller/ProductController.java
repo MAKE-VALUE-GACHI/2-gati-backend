@@ -1,7 +1,7 @@
-package com.gati.hankki.sample.guide.hankki.controller;
+package com.gati.hankki.product.controller;
 
-import com.gati.hankki.sample.guide.hankki.model.Product;
-import com.gati.hankki.sample.guide.hankki.service.ProductService;
+import com.gati.hankki.product.model.Product;
+import com.gati.hankki.product.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +23,7 @@ public class ProductController {
 
     @GetMapping()
     @Operation(summary = "전체 상품 조회 API", description = "전체 상품을 내역 조회")
-    public ResponseEntity<List<Product>> getBoardList() {
+    public ResponseEntity<List<Product>> getProductList() {
         List<Product> findAll = productService.findAll();
         return ResponseEntity
                 .ok(findAll);
@@ -31,7 +31,7 @@ public class ProductController {
 
     @GetMapping("/{id}")
     @Operation(summary = "상품 상세 조회 API", description = "상품 ID(번호)로 상세 내역 조회")
-    public ResponseEntity<Product> getBoardDetail(@PathVariable Long id) {
+    public ResponseEntity<Product> getProductDetail(@PathVariable Long id) {
         Product product = productService.findById(id);
         return ResponseEntity
                 .ok(product);

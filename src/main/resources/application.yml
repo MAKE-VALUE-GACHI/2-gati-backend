@@ -30,3 +30,6 @@ swagger-info:
 jasypt:
   encryptor:
     password: makeValueGachiSecondTeamGati
+
+server:
+  port: 9995
