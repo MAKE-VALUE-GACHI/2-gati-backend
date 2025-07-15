@@ -32,4 +32,5 @@ jasypt:
     password: makeValueGachiSecondTeamGati
 
 server:
-  port: 9995
+  port: 8080
+  address: 0.0.0.0
