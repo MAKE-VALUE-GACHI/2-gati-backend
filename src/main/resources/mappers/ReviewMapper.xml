@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatic.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gati.hankki.review.mapper.ReviewMapper">
+
+    <select id="findReviewsByBoardId" resultType="com.gati.hankki.review.dto.ReviewResponse">
+        SELECT
+            REVIEW_NO       AS id,
+            REVIEW_NAME     AS title,
+            REVIEW_CONTENT  AS content,
+            REVIEW_TIME     AS registrationDate,
+            REVIEW_LATE     AS late
+        FROM Reviews
+        WHERE BOARD_NO = #{boardId}
+        ORDER BY REVIEW_NO DESC
+    </select>
+
+    <select id="findById" resultType="com.gati.hankki.review.dto.ReviewResponse">
+        SELECT
+            REVIEW_NO       AS id,
+            REVIEW_NAME     AS title,
+            REVIEW_CONTENT  AS content,
+            REVIEW_TIME     AS registrationDate,
+            REVIEW_LATE     AS late
+        FROM Reviews
+        WHERE REVIEW_NO = #{id}
+    </select>
+
+    <insert id="insertReview" parameterType="com.gati.hankki.review.entity.Review" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO Reviews (
+            BOARD_NO,
+            REVIEW_NAME,
+            REVIEW_CONTENT,
+            REVIEW_TIME,
+            REVIEW_LATE,
+            CREATED_ID,
+            CREATED_AT
+        )
+        VALUES (
+            #{boardId},
+            #{name},
+            #{content},
+            #{registrationDate},
+            #{late},
+            #{createdId},
+            #{createdAt}
+        )
+    </insert>
+
+    <update id="updateReview" parameterType="com.gati.hankki.review.entity.Review">
+        UPDATE Reviews
+        SET
+            REVIEW_CONTENT = #{reviewContent},
+            REVIEW_LATE = #{reviewLate},
+            UPDATED_ID = #{updatedId},
+            UPDATED_AT = #{updatedAt}
+        WHERE REVIEW_NO = #{reviewNo}
+    </update>
+
+    <delete id="deleteReview" parameterType="Long">
+        DELETE FROM Reviews
+        WHERE REVIEW_NO = #{id}
+    </delete>
+
+</mapper>
