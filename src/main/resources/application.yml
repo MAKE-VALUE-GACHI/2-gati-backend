@@ -10,7 +10,7 @@ spring:
 
   web:
     resources:
-      add-mappings: true
+      static-locations: file:/home/dev/attached/
 
 mybatis:
   configuration:
@@ -42,8 +42,3 @@ server:
 upload:
   file:
     path: /home/dev/attached/product
-
-static:
-  file:
-    root:
-      path: /home/dev/attached/

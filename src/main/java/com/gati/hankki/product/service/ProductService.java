@@ -34,7 +34,7 @@ public class ProductService {
                         item.nickname(),
                         item.status(),
                         item.registrationDate(),
-                        item.thumbnailUrl() != null ? fileService.getFileUrl(item.thumbnailUrl()) : null
+                        item.imageUrl() != null ? fileService.imageUrl(item.imageUrl()) : null
                 ))
                 .toList();
     }
@@ -47,7 +47,7 @@ public class ProductService {
         List<String> filePaths = productMapper.findImageUrlsByBoardId(id);
 
         List<String> imageUrls = filePaths.stream()
-                .map(fileService::getFileUrl)
+                .map(fileService::imageUrl)
                 .toList();
 
         return ProductDetailResponse.from(detail, imageUrls);

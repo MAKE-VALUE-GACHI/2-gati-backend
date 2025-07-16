@@ -9,7 +9,7 @@ public record ProductListResponse(
         String nickname,
         String status,
         LocalDateTime registrationDate,
-        String thumbnailUrl
+        String imageUrl
 ) {
 }
 
