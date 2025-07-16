@@ -4,37 +4,70 @@
 
 <mapper namespace="com.gati.hankki.product.mapper.ProductMapper">
 
-    <select id="findAll" resultType="com.gati.hankki.product.model.Product">
+    <select id="findList" resultType="com.gati.hankki.product.dto.ProductListResponse">
         SELECT
-            board_no,
-            member_no,
-            board_name,
-            board_content,
-            board_time,
-            board_category,
-            board_status,
-            created_id,
-            created_at,
-            updated_id,
-            updated_at
-        FROM Boards
+            b.board_no          AS id,
+            b.board_name        AS title,
+            b.board_category    AS category,
+            m.member_name       AS nickname,
+            b.board_status      AS status,
+            b.board_time        AS registrationDate,
+            f.file_path         AS thumbnailUrl
+        FROM Boards b
+        LEFT JOIN Members m ON b.member_no = m.member_no
+        LEFT JOIN (
+            SELECT board_no, file_path
+            FROM Files
+            WHERE file_no IN (
+                SELECT MIN(file_no)
+                FROM Files
+                GROUP BY board_no
+            )
+        ) f ON b.board_no = f.board_no
+        <where>
+            <if test="category != null and category != ''">
+                b.board_category = #{category}
+            </if>
+            <if test="keyword != null and keyword != ''">
+                AND (
+                    b.board_name LIKE CONCAT('%', #{keyword}, '%')
+                    OR b.board_content LIKE CONCAT('%', #{keyword}, '%')
+                )
+            </if>
+        </where>
+        <choose>
+            <when test="sort == 'latest'">
+                ORDER BY b.board_time DESC
+            </when>
+            <when test="sort == 'rating'">
+                ORDER BY b.board_time DESC
+            </when>
+            <otherwise>
+                ORDER BY RAND()
+            </otherwise>
+        </choose>
     </select>
 
-    <select id="findById" parameterType="Long" resultType="com.gati.hankki.product.model.Product">
+    <select id="findById" parameterType="Long" resultType="com.gati.hankki.product.dto.ProductDetail">
         SELECT
-            board_no,
-            member_no,
-            board_name,
-            board_content,
-            board_time,
-            board_category,
-            board_status,
-            created_id,
-            created_at,
-            updated_id,
-            updated_at
-        FROM Boards
+            b.board_no          AS id,
+            b.board_name        AS title,
+            b.board_content     AS content,
+            b.board_category    AS category,
+            b.board_status      AS status,
+            m.member_name       AS nickname,
+            b.board_time        AS registrationDate
+        FROM Boards b
+        LEFT JOIN Members m ON b.member_no = m.member_no
+        WHERE b.board_no = #{id}
+    </select>
+
+    <select id="findImageUrlsByBoardId" parameterType="long" resultType="string">
+        SELECT
+            file_path
+        FROM Files
         WHERE board_no = #{id}
+        ORDER BY file_no ASC
     </select>
 
 </mapper>

@@ -1,6 +1,7 @@
 package com.gati.hankki.product.mapper;
 
-import com.gati.hankki.product.model.Product;
+import com.gati.hankki.product.dto.ProductDetail;
+import com.gati.hankki.product.dto.ProductListResponse;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -8,7 +9,9 @@ import java.util.Optional;
 
 @Mapper
 public interface ProductMapper {
-    List<Product> findAll();
+    List<ProductListResponse> findList(String category, String keyword, String sort);
 
-    Optional<Product> findById(Long id);
+    Optional<ProductDetail> findById(Long id);
+
+    List<String> findImageUrlsByBoardId(Long boardId);
 }
