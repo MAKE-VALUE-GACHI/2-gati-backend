@@ -8,7 +8,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.MediaTypeFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,14 +16,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/files")
 public class FileController {
 
+    public static final String PREFIX = "/api/v1/files/view/";
     private final FileService fileService;
 
-    @GetMapping("/view/{folder}/{fileName:.+}")
-    public ResponseEntity<Resource> serveFile(
-            @PathVariable String folder,
-            @PathVariable String fileName
-    ) {
-        String relativePath = folder + "/" + fileName;
+    @GetMapping("/view/**")
+    public ResponseEntity<Resource> serveFile(HttpServletRequest request) {
+        String uri = request.getRequestURI();
+        String relativePath = uri.substring(uri.indexOf(PREFIX) + PREFIX.length());
+
         Resource file = fileService.loadFile(relativePath);
 
         return ResponseEntity.ok()
