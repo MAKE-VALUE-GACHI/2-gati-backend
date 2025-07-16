@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatic.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gati.hankki.carousel.mapper.CarouselMapper">
+
+    <select id="findList" resultType="com.gati.hankki.carousel.dto.CarouselResponse">
+        SELECT
+            b.board_no      AS id,
+            b.board_name    AS title,
+            b.board_content AS content,
+            m.member_name   AS nickname,
+            f.real_file_name
+        FROM Boards b
+        LEFT JOIN Members m ON b.member_no = m.member_no
+        LEFT JOIN Files f ON f.board_no = b.board_no
+        ORDER BY RAND()
+        LIMIT 6
+    </select>
+
+</mapper>
