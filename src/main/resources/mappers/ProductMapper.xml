@@ -12,11 +12,11 @@
             m.member_name       AS nickname,
             b.board_status      AS status,
             b.board_time        AS registrationDate,
-            f.file_path         AS thumbnailUrl
+            f.real_file_name         AS thumbnailUrl
         FROM Boards b
         LEFT JOIN Members m ON b.member_no = m.member_no
         LEFT JOIN (
-            SELECT board_no, file_path
+            SELECT board_no, real_file_name
             FROM Files
             WHERE file_no IN (
                 SELECT MIN(file_no)
@@ -64,7 +64,7 @@
 
     <select id="findImageUrlsByBoardId" parameterType="long" resultType="string">
         SELECT
-            file_path
+            real_file_name
         FROM Files
         WHERE board_no = #{id}
         ORDER BY file_no ASC
