@@ -2,13 +2,19 @@ package com.gati.hankki.product.controller;
 
 import com.gati.hankki.product.dto.ProductDetailResponse;
 import com.gati.hankki.product.dto.ProductListResponse;
+import com.gati.hankki.product.dto.ProductRegisterRequest;
 import com.gati.hankki.product.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -41,9 +47,34 @@ public class ProductController {
 
     @GetMapping("/{id}")
     @Operation(summary = "상품 상세 조회 API", description = "상품 ID(번호)로 상세 내역 조회")
-    public ResponseEntity<ProductDetailResponse> getProductDetail(@PathVariable Long id) {
+    public ResponseEntity<ProductDetailResponse> getProductDetail(
+            @Parameter(description = "상품 ID", example = "1")
+            @PathVariable Long id
+    ) {
         return ResponseEntity
                 .ok(productService.findById(id));
     }
 
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @Operation(
+            summary = "상품 등록 API",
+            description = "상품 등록 및 이미지 파일 업로드",
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    content = {
+                            @Content(
+                                    mediaType = MediaType.MULTIPART_FORM_DATA_VALUE,
+                                    schema = @Schema(implementation = ProductRegisterRequest.class)
+                            )
+                    }
+            )
+    )
+    public ResponseEntity<Void> registerProduct(
+            @RequestPart(value = "data") ProductRegisterRequest request,
+            @RequestPart(value = "images", required = false) List<MultipartFile> images
+    ) {
+        productService.registerProduct(request, images);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .build();
+    }
 }

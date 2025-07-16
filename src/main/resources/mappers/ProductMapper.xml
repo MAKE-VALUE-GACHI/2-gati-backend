@@ -70,4 +70,31 @@
         ORDER BY file_no ASC
     </select>
 
+    <insert id="insert" parameterType="com.gati.hankki.product.entity.Product" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO Boards (
+            MEMBER_NO,
+            BOARD_NAME,
+            BOARD_CONTENT,
+            BOARD_CATEGORY,
+            BOARD_STATUS,
+            BOARD_TYPE,
+            BOARD_PRICE,
+            BOARD_TIME,
+            CREATED_ID,
+            CREATED_AT
+        )
+        VALUES (
+            #{memberId},
+            #{title},
+            #{content},
+            #{category},
+            #{status},
+            #{type},
+            #{price},
+            #{registrationDate},
+            #{createdId},
+            #{createdAt}
+        )
+    </insert>
+
 </mapper>

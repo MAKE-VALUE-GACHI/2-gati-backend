@@ -1,13 +1,19 @@
 package com.gati.hankki.product.service;
 
+import com.gati.hankki.file.service.FileService;
 import com.gati.hankki.product.dto.ProductDetail;
 import com.gati.hankki.product.dto.ProductDetailResponse;
 import com.gati.hankki.product.dto.ProductListResponse;
+import com.gati.hankki.product.dto.ProductRegisterRequest;
+import com.gati.hankki.product.entity.Product;
 import com.gati.hankki.product.mapper.ProductMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Slf4j
@@ -16,6 +22,7 @@ import java.util.List;
 public class ProductService {
 
     private final ProductMapper productMapper;
+    private final FileService fileService;
 
     public List<ProductListResponse> findList(String category, String keyword, String sort) {
         log.info("ProductService findList category={}, keyword={}, sort={}", category, keyword, sort);
@@ -31,4 +38,30 @@ public class ProductService {
 
         return ProductDetailResponse.from(detail, images);
     }
+
+    @Transactional
+    public void registerProduct(ProductRegisterRequest request, List<MultipartFile> images) {
+        Long memberNo = 1L;
+        String memberIdentifier = "hankki";
+
+        Product product = Product.builder()
+                .memberId(memberNo)
+                .title(request.getTitle())
+                .content(request.getContent())
+                .price(request.getPrice())
+                .category(request.getCategory())
+                .type(request.getType())
+                .status(request.getStatus())
+                .registrationDate(LocalDateTime.now())
+                .createdId(memberIdentifier)
+                .createdAt(LocalDateTime.now())
+                .build();
+
+        productMapper.insert(product);
+
+        if (images != null && !images.isEmpty()) {
+            fileService.storeFiles(images, product.getId(), memberIdentifier);
+        }
+    }
+
 }
