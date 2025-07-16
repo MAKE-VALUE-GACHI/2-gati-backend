@@ -38,3 +38,8 @@ server:
 upload:
   file:
     path: /home/dev/attached/product
+
+static:
+  file:
+    root:
+      path: /home/dev/attached/

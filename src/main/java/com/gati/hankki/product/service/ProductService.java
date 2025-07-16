@@ -26,7 +26,17 @@ public class ProductService {
 
     public List<ProductListResponse> findList(String category, String keyword, String sort) {
         log.info("ProductService findList category={}, keyword={}, sort={}", category, keyword, sort);
-        return productMapper.findList(category, keyword, sort);
+        return productMapper.findList(category, keyword, sort).stream()
+                .map(item -> new ProductListResponse(
+                        item.id(),
+                        item.title(),
+                        item.category(),
+                        item.nickname(),
+                        item.status(),
+                        item.registrationDate(),
+                        item.thumbnailUrl() != null ? fileService.getFileUrl(item.thumbnailUrl()) : null
+                ))
+                .toList();
     }
 
     public ProductDetailResponse findById(Long id) {
@@ -34,9 +44,13 @@ public class ProductService {
         ProductDetail detail = productMapper.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 상품은 존재하지 않습니다. ID = " + id));
 
-        List<String> images = productMapper.findImageUrlsByBoardId(id);
+        List<String> filePaths = productMapper.findImageUrlsByBoardId(id);
 
-        return ProductDetailResponse.from(detail, images);
+        List<String> imageUrls = filePaths.stream()
+                .map(fileService::getFileUrl)
+                .toList();
+
+        return ProductDetailResponse.from(detail, imageUrls);
     }
 
     @Transactional

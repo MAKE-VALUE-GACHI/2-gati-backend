@@ -7,10 +7,16 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
@@ -26,6 +32,9 @@ public class FileService {
 
     @Value("${upload.file.path}")
     private String uploadPath;
+
+    @Value("${static.file.root.path}")
+    private String rootPath;
 
     private final FileMapper fileMapper;
 
@@ -65,5 +74,32 @@ public class FileService {
         }
 
         return results;
+    }
+
+    public Resource loadFile(String relativePath) {
+        try {
+            Path filePath = Paths.get(rootPath).resolve(relativePath).normalize();
+            Resource resource = new UrlResource(filePath.toUri());
+
+            if (!resource.exists()) {
+                throw new FileNotFoundException("파일을 찾을 수 없습니다: " + relativePath);
+            }
+
+            return resource;
+        } catch (MalformedURLException | FileNotFoundException e) {
+            log.error("파일 로드 실패: {}", relativePath, e);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "파일을 찾을 수 없습니다.");
+        }
+    }
+
+    public String getFileUrl(String fullPath) {
+        if (fullPath == null) return null;
+
+        String relativePath = fullPath.replace(rootPath, "");
+        if (relativePath.startsWith("/")) {
+            relativePath = relativePath.substring(1);
+        }
+
+        return "/api/v1/files/view/" + relativePath;
     }
 }
