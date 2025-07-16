@@ -8,6 +8,10 @@ spring:
     username: ENC(c/kJEdkGBtI73CUD9lnheA==)
     password: ENC(Fcj5iLBzs42eWgE2JfbgYQ==)
 
+  web:
+    resources:
+      add-mappings: false
+
 mybatis:
   configuration:
     map-underscore-to-camel-case: true
