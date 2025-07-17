@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatic.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gati.hankki.checklist.mapper.ChecklistMapper">
+
+    <select id="findChecklists" resultType="com.gati.hankki.checklist.dto.ChecklistResponse">
+        SELECT CHECK_NO AS checkNo,
+               CHECKLIST_CONTENT AS checklistContent
+        FROM Checklists
+        WHERE MEMBER_NO = #{memberNo}
+        ORDER BY CREATED_AT
+    </select>
+
+    <insert id="insertChecklist" parameterType="com.gati.hankki.checklist.entity.Checklist" useGeneratedKeys="true" keyProperty="checkNo">
+        INSERT INTO Checklists (
+            MEMBER_NO,
+            CHECKLIST_CONTENT,
+            DEL_YN,
+            CREATED_ID,
+            CREATED_AT
+        ) VALUES (
+            #{memberNo},
+            #{checklistContent},
+            'N',
+            #{createdId},
+            #{createdAt}
+        )
+    </insert>
+
+    <update id="updateChecklist" parameterType="com.gati.hankki.checklist.entity.Checklist">
+        UPDATE Checklists
+        SET CHECKLIST_CONTENT = #{checklistContent},
+            UPDATED_ID = #{updatedId},
+            UPDATED_AT = NOW()
+        WHERE CHECK_NO = #{checkNo}
+    </update>
+
+    <delete id="deleteChecklist" parameterType="Long">
+        DELETE FROM Checklists
+        WHERE CHECK_NO = #{checkNo}
+    </delete>
+
+</mapper>
