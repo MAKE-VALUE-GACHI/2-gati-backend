@@ -9,6 +9,7 @@ public record ProductDetail(
         String category,
         String status,
         String nickname,
-        LocalDateTime registrationDate
+        LocalDateTime registrationDate,
+        String delYn
 ) {
 }

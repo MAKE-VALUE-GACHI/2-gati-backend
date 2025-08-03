@@ -14,8 +14,10 @@ public interface ProductMapper {
 
     Optional<ProductDetail> findById(Long id);
 
-    List<String> findImageUrlsByBoardId(Long boardId);
+    List<String> findImageUrlsByBoardId(Long id);
 
     void insert(Product product);
+
+    void deleteById(Long id);
 
 }

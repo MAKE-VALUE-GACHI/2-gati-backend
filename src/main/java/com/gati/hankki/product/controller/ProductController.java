@@ -77,4 +77,14 @@ public class ProductController {
                 .status(HttpStatus.CREATED)
                 .build();
     }
+
+    @DeleteMapping("/{id}")
+    @Operation(summary = "상품 삭제 API", description = "상품 삭제(논리) 처리")
+    public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
+        productService.deleteProduct(id);
+        return ResponseEntity
+            .status(HttpStatus.NO_CONTENT)
+            .build();
+    }
+
 }

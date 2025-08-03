@@ -78,4 +78,16 @@ public class ProductService {
         }
     }
 
+    public void deleteProduct(Long id) {
+        log.info("ProductService deleteProduct id={}", id);
+        ProductDetail existingProduct = productMapper.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("해당 상품은 존재하지 않습니다. ID = " + id));
+
+        if ("Y".equals(existingProduct.delYn())) {
+            throw new IllegalStateException("이미 삭제된 상품은 다시 삭제할 수 없습니다.");
+        }
+
+        productMapper.deleteById(id);
+    }
+
 }

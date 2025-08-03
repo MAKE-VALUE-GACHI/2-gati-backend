@@ -56,7 +56,8 @@
             b.board_category    AS category,
             b.board_status      AS status,
             m.member_name       AS nickname,
-            b.board_time        AS registrationDate
+            b.board_time        AS registrationDate,
+            b.del_yn            AS delYn
         FROM Boards b
         LEFT JOIN Members m ON b.member_no = m.member_no
         WHERE b.board_no = #{id}
@@ -96,5 +97,11 @@
             #{createdAt}
         )
     </insert>
+
+    <update id="deleteById" parameterType="long">
+        UPDATE Boards
+        SET DEL_YN = 'Y'
+        WHERE board_no = #{id}
+    </update>
 
 </mapper>
