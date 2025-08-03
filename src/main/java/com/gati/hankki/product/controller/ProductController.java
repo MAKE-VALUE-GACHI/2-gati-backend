@@ -3,6 +3,7 @@ package com.gati.hankki.product.controller;
 import com.gati.hankki.product.dto.ProductDetailResponse;
 import com.gati.hankki.product.dto.ProductListResponse;
 import com.gati.hankki.product.dto.ProductRegisterRequest;
+import com.gati.hankki.product.dto.ProductUpdateRequest;
 import com.gati.hankki.product.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -76,6 +77,21 @@ public class ProductController {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .build();
+    }
+
+    @PutMapping("/{id}")
+    @Operation(
+        summary = "상품 수정 API",
+        description = "상품 정보 수정 및 이미지 파일 수정"
+    )
+    public ResponseEntity<Void> updateProduct(
+        @PathVariable Long id,
+        @RequestBody ProductUpdateRequest request
+    ) {
+        productService.updateProduct(id, request);
+        return ResponseEntity
+            .status(HttpStatus.NO_CONTENT)
+            .build();
     }
 
     @DeleteMapping("/{id}")

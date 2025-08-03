@@ -98,6 +98,19 @@
         )
     </insert>
 
+    <update id="updateProduct" parameterType="com.gati.hankki.product.entity.Product">
+        UPDATE Boards
+        SET
+            BOARD_NAME = #{title},
+            BOARD_CONTENT = #{content},
+            BOARD_CATEGORY = #{category},
+            BOARD_STATUS = #{status},
+            BOARD_PRICE = #{price},
+            BOARD_TYPE = #{type},
+            UPDATED_AT = NOW()
+        WHERE BOARD_NO = #{id}
+    </update>
+
     <update id="deleteById" parameterType="long">
         UPDATE Boards
         SET DEL_YN = 'Y'
