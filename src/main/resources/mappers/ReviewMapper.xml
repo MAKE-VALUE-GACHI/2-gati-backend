@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatic.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gati.hankki.review.mapper.ReviewMapper">
+
+    <insert id="insertReview" parameterType="com.gati.hankki.review.model.Review">
+        INSERT INTO Reviews (
+            BOARD_NO, REVIEW_NAME, REVIEW_CONTENT, REVIEW_LATE, 
+            CREATED_ID, CREATED_AT, REVIEW_TIME
+        ) VALUES (
+            #{boardNo}, #{reviewName}, #{reviewContent}, #{reviewRating},
+            #{createdId}, NOW(), NOW()
+        )
+    </insert>
+
+    <select id="findReviewsByBoardId" parameterType="long" resultType="com.gati.hankki.review.model.ReviewListResponseDto">
+        SELECT
+            REVIEW_NO as reviewNo,
+            REVIEW_NAME as reviewName,
+            CREATED_ID as createdId
+        FROM
+            Reviews
+        WHERE
+            BOARD_NO = #{boardId}
+        ORDER BY
+            CREATED_AT DESC
+    </select>
+
+    <select id="findReviewById" parameterType="long" resultType="com.gati.hankki.review.model.Review">
+        SELECT
+            REVIEW_NO as reviewNo,
+            BOARD_NO as boardNo,
+            REVIEW_NAME as reviewName,
+            REVIEW_CONTENT as reviewContent,
+            REVIEW_LATE as reviewRating,
+            CREATED_ID as createdId,
+            CREATED_AT as createdAt
+        FROM
+            Reviews
+        WHERE
+            REVIEW_NO = #{reviewId}
+    </select>
+
+    <update id="updateReview" parameterType="com.gati.hankki.review.model.Review">
+        UPDATE Reviews
+        SET
+            REVIEW_NAME = #{reviewName},
+            REVIEW_CONTENT = #{reviewContent},
+            REVIEW_LATE = #{reviewRating},
+            UPDATED_ID = #{updatedId},
+            UPDATED_AT = NOW()
+        WHERE
+            REVIEW_NO = #{reviewNo}
+    </update>
+
+    <delete id="deleteReview" parameterType="long">
+        DELETE FROM Reviews
+        WHERE REVIEW_NO = #{reviewId}
+    </delete>
+
+
+</mapper>
