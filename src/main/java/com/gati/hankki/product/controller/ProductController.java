@@ -7,8 +7,11 @@ import com.gati.hankki.product.dto.ProductUpdateRequest;
 import com.gati.hankki.product.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Encoding;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.SchemaProperty;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -58,25 +61,27 @@ public class ProductController {
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(
-            summary = "상품 등록 API",
-            description = "상품 등록 및 이미지 파일 업로드",
-            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
-                    content = {
-                            @Content(
-                                    mediaType = MediaType.MULTIPART_FORM_DATA_VALUE,
-                                    schema = @Schema(implementation = ProductRegisterRequest.class)
-                            )
-                    }
+        summary = "상품 등록 API",
+        description = "상품 등록 및 이미지 파일 업로드",
+        requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+            content = @Content(
+                mediaType = MediaType.MULTIPART_FORM_DATA_VALUE,
+                schema = @Schema(implementation = com.gati.hankki.product.dto.ProductRegisterMultipart.class),
+                encoding = {
+                    @Encoding(name = "data", contentType = MediaType.APPLICATION_JSON_VALUE),
+                    @Encoding(name = "images", contentType = "image/*")
+                }
             )
+        )
     )
     public ResponseEntity<Void> registerProduct(
-            @RequestPart(value = "data") ProductRegisterRequest request,
-            @RequestPart(value = "images", required = false) List<MultipartFile> images
+        @RequestPart(value = "data") ProductRegisterRequest request,
+        @RequestPart(value = "images", required = false) List<MultipartFile> images
     ) {
         productService.registerProduct(request, images);
         return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .build();
+            .status(HttpStatus.CREATED)
+            .build();
     }
 
     @PutMapping("/{id}")
