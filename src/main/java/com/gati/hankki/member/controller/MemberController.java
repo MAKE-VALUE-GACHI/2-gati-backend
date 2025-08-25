@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.gati.hankki.member.model.LoginRequestDto;
+import com.gati.hankki.member.model.MemberDto;
 import com.gati.hankki.member.model.Member;
 import com.gati.hankki.member.service.MemberService;
 
@@ -23,17 +23,17 @@ public class MemberController {
 	
     private final MemberService memberService;
 	
-    @PostMapping("/login")
-    @Operation(summary = "로그인 API", description = "ID와 비밀번호로 로그인")
-    public ResponseEntity<Member> login(@RequestBody LoginRequestDto loginRequestDto) {
-        Member result = memberService.login(loginRequestDto);
-
-        if (result != null) {
-            return ResponseEntity.ok(result);
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
-    }
+//    @PostMapping("/login")
+//    @Operation(summary = "로그인 API", description = "ID와 비밀번호로 로그인")
+//    public ResponseEntity<Member> login(@RequestBody MemberDto loginRequestDto) {
+//        Member result = memberService.login(loginRequestDto);
+//
+//        if (result != null) {
+//            return ResponseEntity.ok(result);
+//        } else {
+//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+//        }
+//    }
 
 
 
